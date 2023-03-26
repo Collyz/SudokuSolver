@@ -3,8 +3,7 @@ public class SudokuSolverTester {
 
         //Sudoku Solver
         SudokuSolver solver = new SudokuSolver();
-
         solver.getPuzzle();
-
+        solver.getAllConstraints();
     }
 }
