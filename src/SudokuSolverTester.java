@@ -4,7 +4,7 @@ public class SudokuSolverTester {
         //Sudoku Solver
         SudokuSolver solver = new SudokuSolver();
         solver.inputPuzzle();
-        solver.getAllAvailable();
-
+        solver.solveSudoku();
+        solver.printPuzzle();
     }
 }
