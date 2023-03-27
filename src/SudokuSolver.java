@@ -1,5 +1,6 @@
 import java.io.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class SudokuSolver {
 
@@ -80,17 +81,15 @@ public class SudokuSolver {
             for (int val : set) {
                 result[i++] = val;
             }
-            result = removeAvailable(result);
             return result;
         }else{
-            return null;
+            return new int[0];
         }
     }
 
     public int[] getBoxConstraint(int var, int rowPos, int colPos){
         if(var != 0){
-            System.out.println("null");
-            return null;
+            return new int[0];
         }
         int boxRow = rowPos / 3; // integer division to get box row index (0-2)
         int boxCol = colPos / 3; // integer division to get box column index (0-2)
@@ -110,7 +109,7 @@ public class SudokuSolver {
         for(int i = 0; i < subArray.size();i++) {
             result[i] = subArray.get(i);
         }
-        result = removeAvailable(result);
+
         return result;
     }
 
@@ -120,23 +119,7 @@ public class SudokuSolver {
                 Set<Integer> combined = new HashSet<>();
                 int[] temp1 = getBoxConstraint(puzzle[i][j], i, j);
                 int[] temp2 = getConstraints(puzzle[i][j], i, j);
-                if(temp1 != null) {
-                    for (int k = 0; k < temp1.length; k++) {
-                        combined.add(temp1[k]);
-                    }
-                }
-                if(temp2 != null){
-                    for(int k = 0; k < temp2.length; k++){
-                        combined.add(temp2[k]);
-                    }
-                }
-
-                int [] result = new int[combined.size()];
-                int k = 0;
-
-                for (int val : combined) {
-                    result[k++] = val;
-                }
+                int [] result = combineArrays(temp1, temp2);
                 result = removeAvailable(result);
                 System.out.println("Puzzle pos: " + i + "," + j + ":"
                         + Arrays.toString(result));
@@ -152,6 +135,9 @@ public class SudokuSolver {
      * @return The sorted and unique array
      */
     public int[] removeAvailable(int[] array) {
+        if(array.length == 0){
+            return array;
+        }
         List<Integer> list1 = new ArrayList<>();
         for (int i : AVAILABILITY_SET) {
             list1.add(i);
@@ -170,6 +156,26 @@ public class SudokuSolver {
 
         Arrays.sort(result);
         return result;
+    }
+
+    public int[] combineArrays(int[] arr1, int[] arr2){
+        Set<Integer> set1 = new HashSet<>();
+        if(arr1 != null){
+            set1 = Arrays.stream(arr1).boxed().collect(Collectors.toSet());
+        }
+        Set<Integer> set2 = new HashSet<>();
+        if(arr2 != null){
+            set2 = Arrays.stream(arr2).boxed().collect(Collectors.toSet());
+        }
+
+        set1.addAll(set2);
+        int[] result = new int[set1.size()];
+        int i = 0;
+        for(int var : set1){
+            result[i++] = var;
+        }
+        return result;
+
     }
 
 
