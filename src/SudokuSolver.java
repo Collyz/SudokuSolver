@@ -60,7 +60,7 @@ public class SudokuSolver {
         return this.puzzle;
     }
 
-    public int[] getConstraints(int var, int rowPos, int colPos){
+    public int[] getVertAndHorizLineValues(int var, int rowPos, int colPos){
         Set<Integer> set = new HashSet<>();
         if(var == 0){
             // Get horizontal constraint
@@ -87,7 +87,7 @@ public class SudokuSolver {
         }
     }
 
-    public int[] getBoxConstraint(int var, int rowPos, int colPos){
+    public int[] getBoxValues(int var, int rowPos, int colPos){
         if(var != 0){
             return new int[0];
         }
@@ -113,14 +113,14 @@ public class SudokuSolver {
         return result;
     }
 
-    public void getAllConstraints(){
+    public void getAllAvailable(){
         for(int i = 0; i < 9; i++){
             for(int j = 0; j < 9; j++){
                 Set<Integer> combined = new HashSet<>();
-                int[] temp1 = getBoxConstraint(puzzle[i][j], i, j);
-                int[] temp2 = getConstraints(puzzle[i][j], i, j);
+                int[] temp1 = getBoxValues(puzzle[i][j], i, j);
+                int[] temp2 = getVertAndHorizLineValues(puzzle[i][j], i, j);
                 int [] result = combineArrays(temp1, temp2);
-                result = removeAvailable(result);
+                result = removeExisting(result);
                 System.out.println("Puzzle pos: " + i + "," + j + ":"
                         + Arrays.toString(result));
             }
@@ -134,7 +134,7 @@ public class SudokuSolver {
      * @param array The array to sort and remove repeating values
      * @return The sorted and unique array
      */
-    public int[] removeAvailable(int[] array) {
+    public int[] removeExisting(int[] array) {
         if(array.length == 0){
             return array;
         }
