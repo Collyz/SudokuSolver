@@ -3,8 +3,6 @@ public class SudokuSolverTester {
 
         //Sudoku Solver
         SudokuSolver solver = new SudokuSolver();
-        solver.inputPuzzle();
-        solver.solveSudoku();
-        solver.printPuzzle();
+        solver.run();
     }
 }
