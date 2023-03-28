@@ -34,6 +34,8 @@ public class SudokuSolver {
             e.printStackTrace();
         }
     }
+
+
     private boolean isValid(int row, int col, int num) {
         for (int i = 0; i < puzzle.length; i++) {
             if (puzzle[row][i] == num) {
@@ -43,8 +45,10 @@ public class SudokuSolver {
                 return false;
             }
         }
-        int boxRow = row - row % 3;
-        int boxCol = col - col % 3;
+        //Calculate start row index of the box
+        int boxRow = (row / 3) * 3;
+        //Calculate start column index of the box
+        int boxCol = (col / 3) * 3;
 
         for (int i = boxRow; i < boxRow + 3; i++) {
             for (int j = boxCol; j < boxCol + 3; j++) {
@@ -55,6 +59,7 @@ public class SudokuSolver {
         }
 
         return true;
+
     }
 
     public boolean solveSudoku() {
@@ -141,17 +146,16 @@ public class SudokuSolver {
         if(var != 0){
             return new int[0];
         }
-        int boxRow = rowPos / 3; // integer division to get box row index (0-2)
-        int boxCol = colPos / 3; // integer division to get box column index (0-2)
-        int startRow = boxRow * 3; // calculate start row index of the box
-        int startCol = boxCol * 3; // calculate start column index of the box
+        int boxRow = (rowPos / 3) * 3;
+        int boxCol = (colPos / 3) * 3;
+
         ArrayList<Integer> subArray = new ArrayList<>();
         for(int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                if(var == puzzle[startRow + i][startCol + j]){
+                if(var == puzzle[boxRow + i][boxCol + j]){
                     subArray.add(0);
                 }else {
-                    subArray.add(this.puzzle[startRow + i][startCol + j]);
+                    subArray.add(this.puzzle[boxRow + i][boxCol + j]);
                 }
             }
         }
