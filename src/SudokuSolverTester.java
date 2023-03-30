@@ -1,3 +1,6 @@
+/**
+ * Group Members: Mohammed Mowla, Brendan Lee
+ */
 public class SudokuSolverTester {
     public static void main(String[] args) {
 

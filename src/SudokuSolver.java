@@ -1,3 +1,6 @@
+/**
+ * Group Members: Mohammed Mowla, Brendan Lee
+ */
 import java.io.*;
 import java.util.*;
 
@@ -71,7 +74,8 @@ public class SudokuSolver {
     }
 
     /**
-     * Solves the sudoku puzzle
+     * Solves the sudoku puzzle using many helper methods. The method getAllAvailable()
+     * uses every other helper method besides isValid()
      * @return boolean to self validate and determine if solution is possible
      */
     public boolean solveSudoku() {
@@ -146,8 +150,8 @@ public class SudokuSolver {
      * @param colPos The column position
      * @return An array as the availability set only checking the horizontal and vertical existing values
      */
-    public int[] getVertAndHorizLineValues(int value, int rowPos, int colPos){
-        //Using a set because repetitive values inserted into a set are ignored.
+    private int[] getVertAndHorizLineValues(int value, int rowPos, int colPos){
+        //Using a set because repetitive values inserted into a set are silently ignored.
         Set<Integer> set = new HashSet<>();
         if(value == 0){
             // Get horizontal constraint
@@ -185,7 +189,7 @@ public class SudokuSolver {
      * @param colPos The column position
      * @return An array that
      */
-    public int[] getBoxValues(int value, int rowPos, int colPos){
+    private int[] getBoxValues(int value, int rowPos, int colPos){
         if(value != 0){
             return new int[0];
         }
@@ -215,24 +219,28 @@ public class SudokuSolver {
      * @param array The array that has values that a variable can be
      * @return The sorted availability set of the variable
      */
-    public int[] removeExisting(int[] array) {
+    private int[] removeExisting(int[] array) {
+        //Check if
         if(array.length == 0){
             return array;
         }
-        List<Integer> list1 = new ArrayList<>();
+        //The complete availability set
+        ArrayList<Integer> availabilitySet = new ArrayList<>();
         for (int i : AVAILABILITY_SET) {
-            list1.add(i);
+            availabilitySet.add(i);
         }
 
-        List<Integer> list2 = new ArrayList<>();
+        //The values to be removed from the availability set
+        ArrayList<Integer> unavailableValues = new ArrayList<>();
         for (int i : array) {
-            list2.add(i);
+            unavailableValues.add(i);
         }
 
-        list1.removeAll(list2);
-        int[] result = new int[list1.size()];
-        for(int i = 0; i < list1.size();i++){
-            result[i] = list1.get(i);
+        //Removing the values from the availability set and returning an array
+        availabilitySet.removeAll(unavailableValues);
+        int[] result = new int[availabilitySet.size()];
+        for(int i = 0; i < availabilitySet.size();i++){
+            result[i] = availabilitySet.get(i);
         }
 
         Arrays.sort(result);
@@ -272,9 +280,13 @@ public class SudokuSolver {
     }
 
     /**
-     * Returns the complete availability set for the position
+     * Uses several helper methods to find the availability set for an index
+     * and returns it with no repeating values
+     * @param rowPos
+     * @param colPos
+     * @return
      */
-    public int[] getAllAvailable(int rowPos, int colPos){
+    private int[] getAllAvailable(int rowPos, int colPos){
         //Availability Set from vertical and horizontal lines
         int[] temp1 = getVertAndHorizLineValues(puzzle[rowPos][colPos], rowPos, colPos);
         //Availability Set from the box in which the variable exists
