@@ -53,7 +53,7 @@ public class SudokuSolver {
 
     /**
      * Returns the 2D array holding the puzzle
-     * @return The current puzzle
+     * @return The current puzzle (The 2D array holding the puzzle)
      */
     public int[][] getPuzzle(){
         return this.puzzle;
